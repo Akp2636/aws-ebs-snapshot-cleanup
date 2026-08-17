@@ -92,34 +92,7 @@ The Lambda can be triggered manually during testing or automatically using Amazo
 
 ## Architecture
 
-```text
-                    Amazon EventBridge
-                     (Daily Schedule)
-                            |
-                            v
-                     AWS Lambda
-                  (Python 3.x + Boto3)
-                     |           |
-                     |           +--------------> CloudWatch Logs
-                     |                            (Execution & Monitoring)
-                     |
-             +-------+-------+
-             |               |
-             v               v
-    DescribeSnapshots   DescribeVolumes
-    (Account-Owned      (Existing EBS
-     Snapshots)          Volumes)
-             |               |
-             +-------+-------+
-                     |
-                     v
-            Cleanup Evaluation
-                     |
-                     v
-             Delete if Eligible
-```
-
----
+![AWS EBS Snapshot Cleanup Architecture](assets/architecture.png)
 
 ## AWS Services Used
 
