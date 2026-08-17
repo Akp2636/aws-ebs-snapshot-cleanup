@@ -14,39 +14,4 @@ This project implements an event-driven AWS Lambda function that identifies snap
 
 ---
 
-## Architecture
 
-```text
-                  +-------------------------+
-                  |    Amazon EventBridge   |
-                  |    (Scheduled Cron)     |
-                  +------------+------------+
-                               |
-                               v
-                  +-------------------------+
-                  |     AWS Lambda Core     |
-                  |   (Python 3.x + Boto3)  |
-                  +------------+------------+
-                               |
-            +------------------+------------------+
-            |                                     |
-            v                                     v
-+-----------------------+             +-----------------------+
-|  ec2:DescribeVolumes  |             | ec2:DescribeSnapshots |
-+-----------+-----------+             +-----------+-----------+
-            |                                     |
-            +------------------+------------------+
-                               |
-                               v
-                  +-------------------------+
-                  | Evaluate Orphan Status  |
-                  |    & Retention Period   |
-                  +------------+------------+
-                               |
-              +----------------+----------------+
-              | (DRY_RUN=false)|                | (Log only)
-              v                v                v
-      +---------------+  +-----------+  +---------------+
-      | DeleteSnapshot|  |  CloudWatch |  | Retain Snapshot|
-      |   (AWS EC2)   |  | Logs/Audit|  |  (No action)  |
-      +---------------+  +-----------+  +---------------+
